@@ -19,7 +19,7 @@ jobs:
       - name: Install ImageMagick
         run: |
           sudo apt-get update
-          sudo apt-get install -y imagemagick librsvg2-bin
+          sudo apt-get install -y imageconvert librsvg2-bin
 
       - name: Download source assets
         run: |
@@ -31,13 +31,13 @@ jobs:
           mkdir -p 2026-10
 
           rsvg-convert -w 1000 /tmp/conversion-bridge-logo.svg -o /tmp/conversion-bridge-logo.png
-          magick /tmp/conversion-bridge-logo.png \
+          convert /tmp/conversion-bridge-logo.png \
             -background white \
             -gravity center \
             -extent 1200x675 \
             -strip 2026-10/conversion-bridge.png
 
-          magick /tmp/wp-activity-log.jpg \
+          convert /tmp/wp-activity-log.jpg \
             -resize 1120x615 \
             -background white \
             -gravity center \
