@@ -7,44 +7,54 @@ on:
     paths:
       - .github/workflows/prepare-social-assets.yml
 
+permissions:
+  contents: write
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install ImageMagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick librsvg2-bin
+
       - name: Download source assets
         run: |
-          mkdir -p out
           curl -fL --retry 3 -A "Mozilla/5.0" "https://conversionbridgewp.com/wp-content/themes/conversionbridge3/images/logo.svg" -o /tmp/conversion-bridge-logo.svg
           curl -fL --retry 3 -A "Mozilla/5.0" "https://premium-plugins.com/wp-content/uploads/2020/10/wpactivitylog-1720x1160.jpg" -o /tmp/wp-activity-log.jpg
 
       - name: Render social-ready images
         run: |
-          if command -v magick >/dev/null 2>&1; then
-            IMG=magick
-          else
-            IMG=convert
-          fi
+          mkdir -p 2026-10
 
-          $IMG -background white -density 300 /tmp/conversion-bridge-logo.svg \
-            -resize 1000x500 \
+          rsvg-convert -w 1000 /tmp/conversion-bridge-logo.svg -o /tmp/conversion-bridge-logo.png
+          magick /tmp/conversion-bridge-logo.png \
+            -background white \
             -gravity center \
             -extent 1200x675 \
-            -strip out/conversion-bridge.png
+            -strip 2026-10/conversion-bridge.png
 
-          $IMG /tmp/wp-activity-log.jpg \
+          magick /tmp/wp-activity-log.jpg \
             -resize 1120x615 \
             -background white \
             -gravity center \
             -extent 1200x675 \
-            -strip -quality 88 out/wp-activity-log.jpg
+            -strip -quality 88 2026-10/wp-activity-log.jpg
 
-          identify out/conversion-bridge.png out/wp-activity-log.jpg
-          ls -lh out/
+          identify 2026-10/conversion-bridge.png 2026-10/wp-activity-log.jpg
+          ls -lh 2026-10/conversion-bridge.png 2026-10/wp-activity-log.jpg
 
-      - name: Upload prepared images
-        uses: actions/upload-artifact@v4
-        with:
-          name: social-assets-2026-10
-          path: out/
+      - name: Commit prepared images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 2026-10/conversion-bridge.png 2026-10/wp-activity-log.jpg
+          if git diff --cached --quiet; then
+            echo "No image changes to commit."
+          else
+            git commit -m "Add October plugin social images"
+            git push
+          fi
