@@ -38,7 +38,7 @@ https://athens.wordcamp.org/2026/tickets/
 Link sticker: https://athens.wordcamp.org/2026/tickets/
 
 ## X (Greek)
-Ευχαριστούμε την Paypercut, Premium χορηγό του WordCamp Athens 2026. Ευρωπαϊκή πλατφόρμα πληρωμών με κάρτες, Apple Pay, Google Pay και BNPL, με έτοιμο extension για WooCommerce.
+Ευχαριστούμε την Paypercut, Premium χορηγό του WordCamp Athens 2026. Ευρωπαϊκή πλατφόρμα πληρωμών για κάρτες, Apple Pay, Google Pay και BNPL, με extension για WooCommerce.
 
 Από την επόμενη Παρασκευή, δύο μέρες στο Πολεμικό Μουσείο. Εισιτήρια:
 https://athens.wordcamp.org/2026/tickets/
